@@ -1,6 +1,6 @@
 fn main() {
     // Server is a struct here - kind of like a class in oo languages
-    let server = Server::new("127.0.0.1:8080");
+    let server = Server::new("127.0.0.1:8080".to_string());
     server.run();
 }
 
@@ -31,11 +31,11 @@ impl Server {
     }
 
     // run is a method because we call it on an instance of a Server
-    // it takes self as the first params 
+    // it takes self as the first param
     // we want the instance of the server to be deallocated when the run functions scope closes
     // so we dont need to pass a reference - we can pass the value directly in here and 
     // let the run function take ownership of the self variable 
     fn run(self) {
-
+        println!("Listening on port {}", self.address);
     }
 }
