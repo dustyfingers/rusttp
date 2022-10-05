@@ -1,3 +1,5 @@
+use std::net::TcpListener;
+
 // everything in a module is private by default
 
 pub struct Server {
@@ -31,6 +33,10 @@ impl Server {
     // so we dont need to pass a reference - we can pass the value directly in here and 
     // let the run function take ownership of the self variable 
     pub fn run(self) {
+        // .bind method returns a result containing either an Ok() wrapping what the
+        // method returns or an Err
+        // unwrap extracts the value if the result contains an Ok()
+        let listener = TcpListener::bind(&self.address).unwrap();
         println!("Listening on port {}", self.address);
     }
 }
