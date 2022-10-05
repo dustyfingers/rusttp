@@ -33,11 +33,29 @@ impl Server {
     // so we dont need to pass a reference - we can pass the value directly in here and 
     // let the run function take ownership of the self variable 
     pub fn run(self) {
-        // .bind method returns a result containing either an Ok() wrapping what the
-        // method returns or an Err
+        // .bind method returns a result 
+        // a result contains either an Ok() wrapping what the method returns or an Err()
         // unwrap extracts the value if the result contains an Ok()
         let listener = TcpListener::bind(&self.address).unwrap();
         println!("Listening on port {}", self.address);
+
+        loop {
+            match listener.accept() {
+                Ok((stream, clientAddress)) => {
+                },
+                Err(e) => println!("Failed to establish a connection: {}", e)
+            }
+            // bad way to deal with results in rust
+            // // hang and accept the next tcp request that comes in
+            // let res = listener.accept();
+
+            // // break from this iteration of loop if connection fails
+            // if res.is_err() {
+            //     continue;
+            // }
+
+            // 
+        }
     }
 }
 
