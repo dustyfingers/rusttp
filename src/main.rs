@@ -1,4 +1,8 @@
 fn main() {
+    let get = Method::GET;
+    let delete = Method::DELETE;
+    let post = Method::POST;
+    let put = Method::PUT;
     // Server is a struct here - kind of like a class in oo languages
     let server = Server::new("127.0.0.1:8080".to_string());
     server.run();
@@ -38,4 +42,31 @@ impl Server {
     fn run(self) {
         println!("Listening on port {}", self.address);
     }
+}
+
+
+// sample HTTP request
+/*
+    GET /user?id=10 HTTP/1.1\r\n
+    HEADERS \r\n
+    BODY
+*/
+
+enum Method {
+    GET,
+    DELETE,
+    POST,
+    PUT,
+    HEAD,
+    CONNECT,
+    OPTIONS,
+    TRACE,
+    PATCH
+}
+
+struct Request {
+    path: String,
+    query_string: String,
+    // method can only be a certain set of strings
+    method: Method
 }
