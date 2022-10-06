@@ -1,4 +1,5 @@
 use std::net::TcpListener;
+use std::io::Read;
 
 // everything in a module is private by default
 
@@ -41,7 +42,15 @@ impl Server {
 
         loop {
             match listener.accept() {
-                Ok((stream, clientAddress)) => {
+                Ok((mut stream, clientAddress)) => {
+                    // creates a buffer array of zeros of size 1024
+                    let mut buffer = [0; 1024];
+                    match stream.read(&mut buffer) {
+                        Ok(_) => {
+                            println!("Received a request: {}", String::from_utf8_lossy(&buffer));
+                        },
+                        Err(e) => println!("Failed to read from connection: {}", e),
+                    }
                 },
                 Err(e) => println!("Failed to establish a connection: {}", e)
             }
