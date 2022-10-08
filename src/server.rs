@@ -1,7 +1,8 @@
 use std::net::TcpListener;
 use std::io::Read;
+use std::convert::TryFrom;
 
-// everything in a module is private by default
+use crate::http::Request;
 
 pub struct Server {
     address: String
@@ -42,12 +43,16 @@ impl Server {
 
         loop {
             match listener.accept() {
-                Ok((mut stream, clientAddress)) => {
+                Ok((mut stream, client_address)) => {
                     // creates a buffer array of zeros of size 1024
                     let mut buffer = [0; 1024];
                     match stream.read(&mut buffer) {
                         Ok(_) => {
                             println!("Received a request: {}", String::from_utf8_lossy(&buffer));
+                            match Request::try_from(&buffer[..]) {
+                                Ok(request) => {},
+                                Err(e) => println!("Failed to parse request: {}", e)
+                            }
                         },
                         Err(e) => println!("Failed to read from connection: {}", e),
                     }
